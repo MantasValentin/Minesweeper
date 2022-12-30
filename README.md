@@ -8,7 +8,7 @@ npm install
 ```
 To launch the app.
 ```bash
-npm start
+npm run dev
 ```
 ## Visit site
 https://minesweeper.mantasval.com/
