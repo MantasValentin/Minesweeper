@@ -15,8 +15,39 @@ import {
   NO_OF_BOMBS_I,
 } from "./constants";
 import { Cell, CellState, CellValue, Face } from "./types";
+import Scores from "./components/Scores";
+import UserName from "./components/UserName";
+import { addDoc, collection, doc, runTransaction } from "firebase/firestore";
+
+// Import the functions you need from the SDKs you need
+import { initializeApp, getApp, getApps } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCj6IHO1DuVe2697APlPD5dDJbZipBSnt8",
+  authDomain: "mantasvalentin-portfolio-4f88d.firebaseapp.com",
+  databaseURL:
+    "https://mantasvalentin-portfolio-4f88d-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "mantasvalentin-portfolio-4f88d",
+  storageBucket: "mantasvalentin-portfolio-4f88d.appspot.com",
+  messagingSenderId: "839817407974",
+  appId: "1:839817407974:web:4a200c1f03c48efc3aba27",
+  measurementId: "G-HGPPN6K8P5",
+};
+
+// Initialize Firebase
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const firestore = getFirestore(app);
+
+export { app, firestore };
 
 const App: React.FC = () => {
+  const [currentDiff, setCurrentDiff] = useState("beginner");
+  const [userName, setUserName] = useState("");
   const [MAX_COLS, set_MAX_COLS] = useState<number>(MAX_COLS_B);
   const [MAX_ROWS, set_MAX_ROWS] = useState<number>(MAX_ROWS_B);
   const [NO_OF_BOMBS, set_NO_OF_BOMBS] = useState<number>(NO_OF_BOMBS_B);
@@ -72,6 +103,7 @@ const App: React.FC = () => {
     if (hasWon) {
       setFace(Face.won);
       setLive(false);
+      handleAddScore();
     }
   }, [hasWon]);
 
@@ -81,6 +113,24 @@ const App: React.FC = () => {
       handleFaceClick();
     }
   }, [difficultyChange]);
+
+  useEffect(() => {
+    if (userName === "") {
+      setUserName(`user${Math.floor(100000 * Math.random())}`);
+    }
+  }, []);
+
+  const handleAddScore = async () => {
+    try {
+      await addDoc(collection(firestore, "scores"), {
+        score: time,
+        name: userName,
+        diff: currentDiff,
+      });
+    } catch (error) {
+      console.log("Failed to add score", error);
+    }
+  };
 
   const handleCellClick = (rowParam: number, colParam: number) => (): void => {
     let newCells = cells.slice();
@@ -228,34 +278,31 @@ const App: React.FC = () => {
   };
 
   const changeDifficultyB = (): void => {
-    setTimeout(() => {
-      set_MAX_COLS(MAX_COLS_B);
-      set_MAX_ROWS(MAX_ROWS_B);
-      set_NO_OF_BOMBS(NO_OF_BOMBS_B);
-      setDifficultyChange(true);
-    }, 0);
+    set_MAX_COLS(MAX_COLS_B);
+    set_MAX_ROWS(MAX_ROWS_B);
+    set_NO_OF_BOMBS(NO_OF_BOMBS_B);
+    setCurrentDiff("beginner");
+    setDifficultyChange(true);
   };
 
   const changeDifficultyI = (): void => {
-    setTimeout(() => {
-      set_MAX_COLS(MAX_COLS_I);
-      set_MAX_ROWS(MAX_ROWS_I);
-      set_NO_OF_BOMBS(NO_OF_BOMBS_I);
-      setDifficultyChange(true);
-    }, 0);
+    set_MAX_COLS(MAX_COLS_I);
+    set_MAX_ROWS(MAX_ROWS_I);
+    set_NO_OF_BOMBS(NO_OF_BOMBS_I);
+    setCurrentDiff("intermediate");
+    setDifficultyChange(true);
   };
 
   const changeDifficultyE = (): void => {
-    setTimeout(() => {
-      set_MAX_COLS(MAX_COLS_E);
-      set_MAX_ROWS(MAX_ROWS_E);
-      set_NO_OF_BOMBS(NO_OF_BOMBS_E);
-      setDifficultyChange(true);
-    }, 0);
+    set_MAX_COLS(MAX_COLS_E);
+    set_MAX_ROWS(MAX_ROWS_E);
+    set_NO_OF_BOMBS(NO_OF_BOMBS_E);
+    setCurrentDiff("expert");
+    setDifficultyChange(true);
   };
 
   return (
-    <div>
+    <div className="Structure">
       <div className="Settings">
         <button className="Difficulty" onClick={changeDifficultyB}>
           Beginner
@@ -288,6 +335,8 @@ const App: React.FC = () => {
           {renderCells()}
         </div>
       </div>
+      <UserName userName={userName} setUserName={setUserName} />
+      <Scores currentDiff={currentDiff} />
     </div>
   );
 };

@@ -1,0 +1,22 @@
+.user-name {
+  padding-top: 8px;
+  height: 2rem /* 32px */;
+  max-width: fit-content;
+}
+
+.user-name-position {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-name-input {
+  width: 100%;
+  padding-left: 0.25rem /* 4px */;
+  padding-right: 0.25rem /* 4px */;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background-color: rgb(194 194 194 / var(--tw-bg-opacity));
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
