@@ -278,65 +278,75 @@ const App: React.FC = () => {
   };
 
   const changeDifficultyB = (): void => {
-    set_MAX_COLS(MAX_COLS_B);
-    set_MAX_ROWS(MAX_ROWS_B);
-    set_NO_OF_BOMBS(NO_OF_BOMBS_B);
-    setCurrentDiff("beginner");
-    setDifficultyChange(true);
+    setTimeout(() => {
+      set_MAX_COLS(MAX_COLS_B);
+      set_MAX_ROWS(MAX_ROWS_B);
+      set_NO_OF_BOMBS(NO_OF_BOMBS_B);
+      setCurrentDiff("beginner");
+      setDifficultyChange(true);
+    }, 0);
   };
 
   const changeDifficultyI = (): void => {
-    set_MAX_COLS(MAX_COLS_I);
-    set_MAX_ROWS(MAX_ROWS_I);
-    set_NO_OF_BOMBS(NO_OF_BOMBS_I);
-    setCurrentDiff("intermediate");
-    setDifficultyChange(true);
+    setTimeout(() => {
+      set_MAX_COLS(MAX_COLS_I);
+      set_MAX_ROWS(MAX_ROWS_I);
+      set_NO_OF_BOMBS(NO_OF_BOMBS_I);
+      setCurrentDiff("intermediate");
+      setDifficultyChange(true);
+    }, 0);
   };
 
   const changeDifficultyE = (): void => {
-    set_MAX_COLS(MAX_COLS_E);
-    set_MAX_ROWS(MAX_ROWS_E);
-    set_NO_OF_BOMBS(NO_OF_BOMBS_E);
-    setCurrentDiff("expert");
-    setDifficultyChange(true);
+    setTimeout(() => {
+      set_MAX_COLS(MAX_COLS_E);
+      set_MAX_ROWS(MAX_ROWS_E);
+      set_NO_OF_BOMBS(NO_OF_BOMBS_E);
+      setCurrentDiff("expert");
+      setDifficultyChange(true);
+    }, 0);
   };
 
   return (
     <div className="Structure">
-      <div className="Settings">
-        <button className="Difficulty" onClick={changeDifficultyB}>
-          Beginner
-        </button>
-        <button className="Difficulty" onClick={changeDifficultyI}>
-          Intermediate
-        </button>
-        <button className="Difficulty" onClick={changeDifficultyE}>
-          Expert
-        </button>
-      </div>
-      <div className="App">
-        <div className="Header">
-          <NumberDisplay value={bombCounter} />
-          <div className="Face" onClick={handleFaceClick}>
-            <span role="img" aria-label="face">
-              {face}
-            </span>
+      <div className="">
+        <div className="Settings">
+          <button className="Difficulty" onClick={changeDifficultyB}>
+            Beginner
+          </button>
+          <button className="Difficulty" onClick={changeDifficultyI}>
+            Intermediate
+          </button>
+          <button className="Difficulty" onClick={changeDifficultyE}>
+            Expert
+          </button>
+        </div>
+        <div className="App">
+          <div className="Header">
+            <NumberDisplay value={bombCounter} />
+            <div className="Face" onClick={handleFaceClick}>
+              <span role="img" aria-label="face">
+                {face}
+              </span>
+            </div>
+            <NumberDisplay value={time} />
           </div>
-          <NumberDisplay value={time} />
-        </div>
-        <div
-          className="Body"
-          style={{
-            display: "grid",
-            gridTemplateRows: `repeat(${MAX_ROWS}, 1fr)`,
-            gridTemplateColumns: `repeat(${MAX_COLS}, 1fr)`,
-          }}
-        >
-          {renderCells()}
+          <div
+            className="Body"
+            style={{
+              display: "grid",
+              gridTemplateRows: `repeat(${MAX_ROWS}, 1fr)`,
+              gridTemplateColumns: `repeat(${MAX_COLS}, 1fr)`,
+            }}
+          >
+            {renderCells()}
+          </div>
         </div>
       </div>
-      <UserName userName={userName} setUserName={setUserName} />
-      <Scores currentDiff={currentDiff} />
+      <div className="User">
+        <UserName userName={userName} setUserName={setUserName} />
+        <Scores currentDiff={currentDiff} />
+      </div>
     </div>
   );
 };

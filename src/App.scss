@@ -2,7 +2,8 @@
 
 .Structure {
   display: flex;
-  flex-direction: column
+  flex-direction: row;
+  gap: 2rem;
 }
 
 .App {
@@ -46,4 +47,8 @@
   &:hover {
     color: black;
   }
+}
+
+.User {
+  padding-top: 1rem;
 }
